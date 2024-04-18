@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('style') -%>
+
+</head>
+<body>
+    <div class="container">
+     
+
+        <% if(type == "edit"){ %>
+            <h1> Edit Your blog</h1>
+            
+          <% } else{ %>  
+            <h1> Add Your blog</h1>
+         <% } %>
+    
+        <form method="POST" action="">
+            <input type="text" name="title" value=<% if(type=="edit") {%> "<%=data.title%>"  <% } else { %> "" <%}%>   placeholder="enter title" /><br/>
+            
+            <!-- <input type="text" name="body" placeholder="enter body"/> -->
+            <textarea name="body" id="" placeholder="enter your body" cols="30" rows="10"> <% if(type=="edit") {%> <%=data.body%>  <% } else { %><%}%></textarea>
+            <br/>
+            <input type="text" name="user" value=<% if(type=="edit") {%> "<%=data.user%>"  <% } else { %> "" <%}%> placeholder="user" /><br/>
+            <input type="text" name="dateandtime" placeholder="enter date and time" value=<% if(type=="edit") {%> <%=data.dateandtime%>  <% } else { %> "" <%}%>/><br/>
+            <input type="submit" value="POST" />
+        </form>
+    </div>
+</body>
+</html>
