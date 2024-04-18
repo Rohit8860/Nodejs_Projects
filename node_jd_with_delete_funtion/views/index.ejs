@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include('style') -%>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1 style="text-align: center; font-weight: bold;">Blogs...</h1>
+            <input type="button" value="post a new blog" onclick="openForm()" />
+        </div>
+
+
+        <div class="myform" style="display: none;">
+            <form method="POST" id="myform">
+                <input type="text" name="title"  placeholder="enter title" /><br/>
+                <textarea name="body" id="" placeholder="enter your body" cols="30" rows="10"></textarea>
+                <br/>
+                <input type="text" name="user" placeholder="user" /><br/>
+                <input type="text" name="dateandtime" placeholder="enter date and time"/><br/>
+                <input type="submit" value="POST" id="submitbutton" />
+            </form>
+        </div>
+
+
+        <div id="all_post">
+
+        </div>
+
+
+    </div>
+    <script type="text/javascript">
+        
+        //to getting post with ajax
+        const getPost = () =>{
+            $.ajax({
+                url:"http://localhost:3000/api/allPost",
+                method:"GET",
+                success:(e)=>{
+                    console.log("success")
+
+                    var __html = ""
+
+                    e.data.map((item,next)=>{
+
+                        __html+=`<div class="blog-item">
+                                    <h3>
+                                        <div class="b_item">
+                                            <div>
+                                                <a href="/blog/${item._id}">
+                                                    ${item.title}
+                                                </a>
+                                            </div>
+                                            <div class="dateandtime">
+                                                ${item.dateandtime}
+                                            </div>
+                                            <button type="button" class="deleteButton" data-id="${item._id}">Delete</button>
+                                        </div>
+                                    </h3>
+                                    <div>${item.body.slice(0,300)}..</div>
+                                </div>`
+                                
+
+
+                    })
+
+                    $("#all_post").html(__html)
+                    
+                },
+                error:(e)=>{
+                    console.log("error")
+                    console.log(e)
+                }
+            })
+        }
+    
+    
+        const openForm = () =>{
+            $(".myform").css({
+                "display":"unset"
+            })
+        }
+
+        $(document).ready(()=>{
+
+            // to post a blog
+            $("#myform").on("submit",(e)=>{
+                e.preventDefault()
+                console.log(e.target.title.value)
+                console.log(e.target.body.value)
+                console.log(e.target.user.value)
+                console.log(e.target.dateandtime.value)
+
+                const data = {
+                    "title":e.target.title.value,
+                    "body":e.target.body.value,
+                    "user":e.target.user.value,
+                    "dateandtime":e.target.dateandtime.value
+                }
+                $.ajax({
+                    method:"POST",
+                    data:data,
+                    dataType:"JSON",
+                    url:"http://localhost:3000/api/add",
+                    success:(e)=>{
+                        console.log(e)
+                        location.reload();
+                        <!-- window.location.href = '/'; -->
+                    },
+                    error:(e)=>{
+                        console.log(e)
+                    }
+                })
+
+            })
+
+            // Delete button event listener
+            $("#all_post").on("click", ".deleteButton", function() {
+                const itemId = $(this).data("id");
+                deleteItem(itemId);
+            });
+
+            // Function to delete item
+            function deleteItem(itemId) {
+                $.ajax({
+                    url: `http://localhost:3000/api/delete/${itemId}`,
+                    method: "DELETE",
+                    success: function(response) {
+                        alert(response.message);
+                        // Reload the page or update UI as needed
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while deleting the item.');
+                    }
+                });
+            }
+
+        })
+
+        $(document).ready(()=>{
+            getPost()
+        })
+    </script>
+</body>
+</html>
