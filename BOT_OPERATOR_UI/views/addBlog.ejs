@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <event_name>EDIT DOCUMENT</title>
+    <%- include('style') -%>
+
+</head>
+<body>
+    <div class="container">
+     
+        <% if(type == "edit"){ %>
+            <h1> Edit Event</h1>
+            
+          <% } else{ %>  
+            <h1> Add Your blog</h1>
+         <% } %>
+    
+        <form method="POST" action="">
+            <input type="text" name="event_name" value=<% if(type=="edit") {%> "<%=data.event_name%>"  <% } else { %> "" <%}%>   placeholder="enter event_name" /><br/>
+            <input type="text" name="event_id" value=<% if(type=="edit") {%> "<%=data.event_id%>"  <% } else { %> "" <%}%>   placeholder="enter event_id" /><br/>
+            <input type="text" name="event_url" value=<% if(type=="edit") {%> "<%=data.event_url%>"  <% } else { %> "" <%}%>   placeholder="enter event_url" /><br/>
+            <!-- <input type="text" name="body" placeholder="enter body"/> -->
+            <textarea name="login" id="" placeholder="add your logins" cols="50" rows="20">
+                <% if(type=="edit") { %>
+                    <%= data.login %>
+                <% } %>
+            </textarea>
+            <br/>
+            <input type="text" name="no_of_tickets" value=<% if(type=="edit") {%> "<%=data.no_of_tickets%>"  <% } else { %> "" <%}%> placeholder="no_of_tickets" /><br/>
+            <input type="text" name="price" placeholder="Price" value=<% if(type=="edit") {%> <%=data.price%>  <% } else { %> "" <%}%>/><br/>
+            <input type="submit" value="POST" /></br>
+            <a class="btn btn-secondary btn-lg btn-block" href="http://localhost:3000/" target="_blank">DASHBOARD</a>
+        </form>
+    </div>
+</body>
+</html>
