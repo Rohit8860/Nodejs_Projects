@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Data</title>
+  <link rel="stylesheet" href="/new.css" type="text/css">
+</head>
+<body>
+    <div class="container">
+      <div>
+        <h1 style="text-align: center; font-weight: bold; border-style: solid;">Tickets Data</h1>
+      </div>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Row</th>
+          <th>Seat no</th>
+          <th>Cookie</th>
+        </tr>
+        <% tickets.forEach(ticket=>{%>
+          <tr>
+            <td><%= ticket.section %> </td>
+            <td><%= ticket.row %></td>
+            <td><%= ticket.seat %></td>
+            <td><%= ticket.cookie %></td>
+            <td>
+              <form action="/tickets/<%= ticket._id %>?_method=DELETE" method="POST">
+                <button type="submit">Delete</button>
+              </form>
+            </td>
+            </tr>
+          <%});%>
+
+      </table>
+    </div>
+
+    <script>
+      function reload(){
+        document.location.reload();
+      }
+      setTimeout(reload,3000);
+    </script>
+</body>
+</html>
